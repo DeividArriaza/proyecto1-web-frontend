@@ -1,0 +1,55 @@
+/* Series Tracker — estética rosa y cutesy. Las fases siguientes refinan los detalles. */
+
+:root {
+  --pink-50: #fff5f8;
+  --pink-100: #ffe4ee;
+  --pink-200: #ffc8db;
+  --pink-400: #ff8fb3;
+  --pink-600: #e25c87;
+  --ink: #4b2236;
+  --shadow: 0 6px 18px rgba(226, 92, 135, 0.18);
+  --radius-lg: 18px;
+  --radius-sm: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, var(--pink-50) 0%, var(--pink-100) 100%);
+  color: var(--ink);
+  font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+}
+
+.app-header {
+  text-align: center;
+  padding: 2.5rem 1rem 1rem;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 2.4rem;
+  letter-spacing: 0.02em;
+  color: var(--pink-600);
+}
+
+.tagline {
+  margin-top: 0.25rem;
+  color: var(--ink);
+  opacity: 0.7;
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.empty {
+  text-align: center;
+  font-style: italic;
+  opacity: 0.7;
+}

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Series Tracker</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>Series Tracker</h1>
+      <p class="tagline">Tu lista personal de series, con cariño.</p>
+    </header>
+
+    <main id="app">
+      <!-- Estado inicial: el JS del cliente lo reemplaza al cargar las series. -->
+      <p class="empty">Cargando series…</p>
+    </main>
+
+    <!-- Cargamos los módulos en orden: helpers de API, helpers de DOM y luego el entry point. -->
+    <script src="js/api.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
