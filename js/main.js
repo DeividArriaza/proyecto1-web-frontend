@@ -57,8 +57,11 @@
   function openCreateForm() {
     showForm({
       initial: null,
-      onSubmit: async (payload) => {
-        await api.createGame(payload);
+      onSubmit: async (payload, imageFile) => {
+        // En creación necesitamos el id del nuevo juego para asociarle la
+        // imagen, así que la subimos en un segundo paso.
+        const created = await api.createGame(payload);
+        if (imageFile) await api.uploadImage(created.id, imageFile);
         closeForm();
         await refreshList();
       },
@@ -68,8 +71,9 @@
   function openEditForm(game) {
     showForm({
       initial: game,
-      onSubmit: async (payload) => {
+      onSubmit: async (payload, imageFile) => {
         await api.updateGame(game.id, payload);
+        if (imageFile) await api.uploadImage(game.id, imageFile);
         closeForm();
         await refreshList();
       },

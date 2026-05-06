@@ -315,3 +315,17 @@ main {
   padding: 0.5rem 0.75rem;
   font-size: 0.85rem;
 }
+
+.form-hint {
+  color: var(--ink-soft);
+  font-size: 0.75rem;
+}
+
+.label-image {
+  grid-column: 1 / -1;
+}
+
+.label-image input[type="file"] {
+  background: var(--pink-50);
+  padding: 0.4rem;
+}

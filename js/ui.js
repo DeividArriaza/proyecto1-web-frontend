@@ -205,6 +205,14 @@
       type: "number", name: "total_hours", min: "0", step: "1",
       value: initial?.total_hours ?? "",
     });
+    // El input de imagen es opcional. En modo creación, el archivo se sube
+    // después del POST porque necesitamos primero el id del juego nuevo.
+    const imageInput = el("input", {
+      type: "file", name: "image", accept: "image/jpeg,image/png,image/webp",
+    });
+    const imageHint = el("small", { class: "form-hint" }, [
+      "Opcional · jpeg, png o webp · máx. 1 MB",
+    ]);
 
     const submitBtn = el("button", { type: "submit", class: "btn btn-primary" }, [
       editing ? "Guardar cambios" : "Crear juego",
@@ -231,8 +239,9 @@
         const total = totalInput.value.trim();
         if (total !== "") payload.total_hours = parseIntOrZero(total);
 
+        const imageFile = imageInput.files[0] || null;
         try {
-          await onSubmit(payload);
+          await onSubmit(payload, imageFile);
         } catch (err) {
           errorBox.hidden = false;
           errorBox.textContent = formatApiError(err);
@@ -247,6 +256,7 @@
       el("label", {}, ["Status *", statusSelect]),
       el("label", {}, ["Horas jugadas", hoursInput]),
       el("label", {}, ["Horas totales (estimado)", totalInput]),
+      el("label", { class: "label-image" }, ["Portada", imageInput, imageHint]),
       el("div", { class: "form-actions" }, [cancelBtn, submitBtn]),
     ]);
 
