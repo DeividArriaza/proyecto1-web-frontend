@@ -23,7 +23,7 @@
     try {
       const res = await api.listGames({ sort: "title", order: "asc", limit: 100 });
       ui.clear(root);
-      root.appendChild(ui.renderList(res.data));
+      root.appendChild(ui.renderList(res.data, cardActions));
     } catch (e) {
       ui.clear(root);
       root.appendChild(
@@ -34,7 +34,13 @@
     }
   }
 
-  // openCreateForm muestra el form vacío para crear un juego nuevo.
+  // cardActions agrupa los handlers que cada tarjeta dispara. Se pasa al
+  // render del listado y se reusa para todas las tarjetas.
+  const cardActions = {
+    onEdit: openEditForm,
+    onDelete: confirmAndDelete,
+  };
+
   function openCreateForm() {
     showForm({
       initial: null,
@@ -44,6 +50,33 @@
         await refreshList();
       },
     });
+  }
+
+  function openEditForm(game) {
+    showForm({
+      initial: game,
+      onSubmit: async (payload) => {
+        await api.updateGame(game.id, payload);
+        closeForm();
+        await refreshList();
+      },
+    });
+  }
+
+  // confirmAndDelete pide confirmación nativa antes de borrar — pequeño y
+  // suficiente para el alcance del lab; se puede sustituir por un modal
+  // bonito en la fase de pulido.
+  async function confirmAndDelete(game) {
+    const ok = window.confirm(
+      `¿Eliminar "${game.title}"? Esta acción no se puede deshacer.`
+    );
+    if (!ok) return;
+    try {
+      await api.deleteGame(game.id);
+      await refreshList();
+    } catch (e) {
+      window.alert(`No se pudo eliminar: ${e.message}`);
+    }
   }
 
   function showForm({ initial, onSubmit }) {

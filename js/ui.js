@@ -51,8 +51,28 @@
     ]);
   }
 
-  // Render de una sola tarjeta de juego.
-  function renderCard(game) {
+  // Render de una sola tarjeta de juego. `actions` es opcional y, si llega,
+  // recibe { onEdit, onDelete } para colgar listeners en los botones.
+  function renderCard(game, actions) {
+    const buttons = actions
+      ? el("div", { class: "card-actions" }, [
+          el(
+            "button",
+            { type: "button", class: "btn-small", onclick: () => actions.onEdit(game) },
+            ["Editar"]
+          ),
+          el(
+            "button",
+            {
+              type: "button",
+              class: "btn-small danger",
+              onclick: () => actions.onDelete(game),
+            },
+            ["Eliminar"]
+          ),
+        ])
+      : null;
+
     return el("article", { class: "card", "data-id": game.id }, [
       el("img", {
         class: "card-cover",
@@ -67,12 +87,13 @@
           el("span", { class: `status-badge ${game.status}` }, [game.status]),
         ]),
         progressFor(game),
+        buttons,
       ]),
     ]);
   }
 
-  // Render del grid completo. Si no hay juegos muestra un estado vacío.
-  function renderList(games) {
+  // Render del grid completo. `actions` se propaga a cada tarjeta.
+  function renderList(games, actions) {
     if (!games || games.length === 0) {
       return el("p", { class: "empty" }, [
         "Todavía no hay juegos. Pronto podrás añadir el primero.",
@@ -81,7 +102,7 @@
     return el(
       "div",
       { class: "game-grid" },
-      games.map(renderCard)
+      games.map((g) => renderCard(g, actions))
     );
   }
 

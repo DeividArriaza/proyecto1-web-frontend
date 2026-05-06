@@ -183,6 +183,34 @@ main {
   color: var(--ink-soft);
 }
 
+/* Acciones por tarjeta: van al fondo, en una fila justificada al final. */
+.card-actions {
+  margin-top: auto;
+  padding-top: 0.6rem;
+  display: flex;
+  gap: 0.4rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.btn-small {
+  font-size: 0.8rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--pink-200);
+  background: var(--pink-50);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+.btn-small:hover { background: var(--pink-100); }
+
+.btn-small.danger {
+  border-color: #e8a8b6;
+  color: #b3324a;
+}
+.btn-small.danger:hover { background: #ffeaef; }
+
 /* --- Form crear/editar --- */
 
 .form-slot {
