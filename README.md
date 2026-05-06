@@ -1,8 +1,8 @@
-# Series Tracker — Frontend
+# Games Tracker — Frontend
 
-Cliente web del proyecto Series Tracker. HTML + CSS + JavaScript vanilla. Sin frameworks, sin librerías, sin bundlers: solo `fetch()` nativo y manipulación directa del DOM.
+Cliente web del proyecto Games Tracker. HTML + CSS + JavaScript vanilla. Sin frameworks, sin librerías, sin bundlers: solo `fetch()` nativo y manipulación directa del DOM.
 
-La API que consume vive en el repo [`series-tracker-backend`](../series-tracker-backend), que también incluye el `docker-compose.yml` que levanta el stack completo (DB + API + frontend en Nginx).
+La API que consume vive en el repo [`games-tracker-backend`](../games-tracker-backend), que también incluye el `docker-compose.yml` que levanta el stack completo (DB + API + frontend en Nginx).
 
 > 🌐 **Demo público:** _pendiente de despliegue_ — se publicará en un VPS Contabo y el enlace se añadirá aquí.
 
@@ -25,7 +25,7 @@ La API que consume vive en el repo [`series-tracker-backend`](../series-tracker-
     └── placeholder.png
 ```
 
-Las tres archivos JS se cargan en el orden `api → ui → main` desde `index.html`. `api.js` y `ui.js` exponen sus funciones bajo `window.api` y `window.ui` respectivamente, así que `main.js` (y los próximos commits) las consume sin imports.
+Los tres archivos JS se cargan en el orden `api → ui → main` desde `index.html`. `api.js` y `ui.js` exponen sus funciones bajo `window.api` y `window.ui` respectivamente, así que `main.js` (y los próximos commits) las consume sin imports.
 
 ---
 
@@ -36,7 +36,7 @@ Las tres archivos JS se cargan en el orden `api → ui → main` desde `index.ht
 Desde el repo del backend, con ambos repos clonados al mismo nivel:
 
 ```bash
-cd ../series-tracker-backend
+cd ../games-tracker-backend
 docker compose up --build
 ```
 
@@ -64,4 +64,4 @@ python3 -m http.server 4567
 
 ## Repositorios relacionados
 
-- Backend (Go + PostgreSQL + Docker Compose): [series-tracker-backend](../series-tracker-backend)
+- Backend (Go + PostgreSQL + Docker Compose): [games-tracker-backend](../games-tracker-backend)
