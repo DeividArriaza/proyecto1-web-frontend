@@ -1,5 +1,6 @@
-// Punto de entrada del cliente. Orquesta la carga inicial del listado y
-// las acciones de la barra de herramientas (crear, editar, eliminar, votar).
+// Punto de entrada del cliente. Orquesta la carga inicial del listado,
+// las acciones de la barra de herramientas (crear) y las acciones por
+// tarjeta (editar, eliminar, votar).
 
 (function () {
   "use strict";
@@ -12,9 +13,10 @@
     refreshList();
   });
 
-  // refreshList vuelve a pedir el listado al backend y reemplaza el contenido
-  // del contenedor #app. Mantenerlo aislado permite reusarlo después de
-  // crear/editar/eliminar.
+  // refreshList vuelve a pedir el listado al backend, mezcla cada juego
+  // con su rating y lo dibuja en el contenedor #app. La fusión vive aquí
+  // porque la API mantiene los endpoints separados (CRUD limpio + rating
+  // dedicado), pero el UI los consume juntos.
   async function refreshList() {
     const root = document.getElementById("app");
     ui.clear(root);
@@ -22,8 +24,14 @@
 
     try {
       const res = await api.listGames({ sort: "title", order: "asc", limit: 100 });
+      const games = res.data;
+      const ratings = await Promise.all(
+        games.map((g) => api.getRating(g.id).catch(() => null))
+      );
+      games.forEach((g, i) => { g.rating = ratings[i]; });
+
       ui.clear(root);
-      root.appendChild(ui.renderList(res.data, cardActions));
+      root.appendChild(ui.renderList(games, cardActions));
     } catch (e) {
       ui.clear(root);
       root.appendChild(
@@ -39,6 +47,11 @@
   const cardActions = {
     onEdit: openEditForm,
     onDelete: confirmAndDelete,
+    // onVote devuelve el summary actualizado para que la tarjeta lo pinte
+    // sin necesidad de refrescar todo el listado.
+    onVote: async (game, score) => {
+      return await api.submitRating(game.id, score);
+    },
   };
 
   function openCreateForm() {

@@ -52,8 +52,10 @@
   }
 
   // Render de una sola tarjeta de juego. `actions` es opcional y, si llega,
-  // recibe { onEdit, onDelete } para colgar listeners en los botones.
+  // recibe { onEdit, onDelete, onVote } para colgar listeners en los controles.
   function renderCard(game, actions) {
+    const ratingNode = renderRating(game, actions?.onVote);
+
     const buttons = actions
       ? el("div", { class: "card-actions" }, [
           el(
@@ -87,8 +89,63 @@
           el("span", { class: `status-badge ${game.status}` }, [game.status]),
         ]),
         progressFor(game),
+        ratingNode,
         buttons,
       ]),
+    ]);
+  }
+
+  // renderRating dibuja el resumen del rating del juego con un selector
+  // 1..10 para votar. El nodo entero se actualiza in-place tras un voto
+  // exitoso usando renderRatingScore para no parpadear toda la tarjeta.
+  function renderRating(game, onVote) {
+    const scoreSpan = renderRatingScore(game.rating);
+
+    if (!onVote) return el("div", { class: "card-rating" }, [scoreSpan]);
+
+    const select = el(
+      "select",
+      { "aria-label": "Tu nota del 1 al 10" },
+      [el("option", { value: "" }, ["Votar…"])].concat(
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) =>
+          el("option", { value: String(n) }, [String(n)])
+        )
+      )
+    );
+    select.addEventListener("change", async () => {
+      const score = parseInt(select.value, 10);
+      if (!Number.isFinite(score)) return;
+      select.disabled = true;
+      try {
+        const updated = await onVote(game, score);
+        // Actualizamos solo el span del promedio para feedback inmediato.
+        const newScore = renderRatingScore(updated);
+        scoreSpan.replaceWith(newScore);
+        select.value = "";
+      } catch (err) {
+        window.alert(`No se pudo registrar el voto: ${formatApiError(err)}`);
+      } finally {
+        select.disabled = false;
+      }
+    });
+
+    return el("div", { class: "card-rating" }, [
+      scoreSpan,
+      el("span", { class: "rating-vote" }, ["Tu voto:", select]),
+    ]);
+  }
+
+  // renderRatingScore acepta un summary { average, count } o nada y produce
+  // el span con la nota. Lo mantenemos puro para poder reusarlo al refrescar
+  // el rating tras un voto.
+  function renderRatingScore(summary) {
+    if (!summary || summary.count === 0) {
+      return el("span", { class: "rating-score empty" }, ["sin votos"]);
+    }
+    const avg = Number(summary.average).toFixed(1);
+    return el("span", { class: "rating-score" }, [
+      `${avg} `,
+      el("span", { class: "rating-count" }, [`(${summary.count})`]),
     ]);
   }
 

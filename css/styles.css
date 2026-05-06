@@ -183,6 +183,48 @@ main {
   color: var(--ink-soft);
 }
 
+/* Bloque de rating: estrella + promedio + voto inline. */
+.card-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.rating-score {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.rating-score::before {
+  content: "★";
+  color: var(--pink-500);
+}
+
+.rating-score.empty { font-weight: 400; opacity: 0.7; }
+
+.rating-vote {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+
+.rating-vote select {
+  font: inherit;
+  padding: 0.15rem 0.3rem;
+  border: 1px solid var(--pink-200);
+  border-radius: var(--radius-sm);
+  background: var(--pink-50);
+  color: var(--ink);
+}
+
 /* Acciones por tarjeta: van al fondo, en una fila justificada al final. */
 .card-actions {
   margin-top: auto;
