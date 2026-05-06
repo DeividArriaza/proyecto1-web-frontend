@@ -1,30 +1,36 @@
-// Punto de entrada del cliente. Por ahora solo hacemos un ping inicial al
-// backend para confirmar conectividad; los siguientes commits irán
-// añadiendo el listado, el formulario, la subida de imágenes, etc.
+// Punto de entrada del cliente. Orquesta la carga inicial del listado y
+// delegará en los siguientes commits las acciones de crear, editar, votar
+// y eliminar.
 
 (function () {
   "use strict";
 
-  document.addEventListener("DOMContentLoaded", async () => {
+  const ui = window.ui;
+  const api = window.api;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    refreshList();
+  });
+
+  // refreshList vuelve a pedir el listado al backend y reemplaza el contenido
+  // del contenedor #app. Mantenerlo aislado permite reusarlo después de
+  // crear/editar/eliminar.
+  async function refreshList() {
     const root = document.getElementById("app");
+    ui.clear(root);
+    root.appendChild(ui.el("p", { class: "empty" }, ["Cargando juegos…"]));
+
     try {
-      // En la fase 1 todavía no existe /games; usamos /healthz como ping.
-      const res = await fetch(`${window.api.base}/healthz`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const body = await res.json();
-      window.ui.clear(root);
-      root.appendChild(
-        window.ui.el("p", { class: "empty" }, [
-          `Backend conectado (${body.status}). Listado de juegos próximamente…`,
-        ])
-      );
+      const res = await api.listGames({ sort: "title", order: "asc", limit: 100 });
+      ui.clear(root);
+      root.appendChild(ui.renderList(res.data));
     } catch (e) {
-      window.ui.clear(root);
+      ui.clear(root);
       root.appendChild(
-        window.ui.el("p", { class: "empty" }, [
-          `No se pudo conectar al backend en ${window.api.base}: ${e.message}`,
-        ])
+        ui.renderError(
+          `No se pudo cargar el listado desde ${api.base}: ${e.message}`
+        )
       );
     }
-  });
+  }
 })();
