@@ -1,4 +1,4 @@
-// Helpers de DOM. Aquí vivirán las funciones que pintan la lista de series,
+// Helpers de DOM. Aquí vivirán las funciones que pintan la lista de juegos,
 // el formulario de creación/edición, etc. Por ahora solo exponemos un
 // utilitario de creación de elementos para que los siguientes commits lo usen.
 

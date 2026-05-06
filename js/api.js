@@ -45,18 +45,18 @@
   const api = {
     base: API_BASE,
 
-    async listSeries(params) {
-      const res = await fetch(`${API_BASE}/series${buildQuery(params)}`);
+    async listGames(params) {
+      const res = await fetch(`${API_BASE}/games${buildQuery(params)}`);
       return handle(res);
     },
 
-    async getSeries(id) {
-      const res = await fetch(`${API_BASE}/series/${encodeURIComponent(id)}`);
+    async getGame(id) {
+      const res = await fetch(`${API_BASE}/games/${encodeURIComponent(id)}`);
       return handle(res);
     },
 
-    async createSeries(payload) {
-      const res = await fetch(`${API_BASE}/series`, {
+    async createGame(payload) {
+      const res = await fetch(`${API_BASE}/games`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -64,8 +64,8 @@
       return handle(res);
     },
 
-    async updateSeries(id, payload) {
-      const res = await fetch(`${API_BASE}/series/${encodeURIComponent(id)}`, {
+    async updateGame(id, payload) {
+      const res = await fetch(`${API_BASE}/games/${encodeURIComponent(id)}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -73,8 +73,8 @@
       return handle(res);
     },
 
-    async deleteSeries(id) {
-      const res = await fetch(`${API_BASE}/series/${encodeURIComponent(id)}`, {
+    async deleteGame(id) {
+      const res = await fetch(`${API_BASE}/games/${encodeURIComponent(id)}`, {
         method: "DELETE",
       });
       return handle(res);
@@ -84,7 +84,7 @@
       const fd = new FormData();
       fd.append("image", file);
       const res = await fetch(
-        `${API_BASE}/series/${encodeURIComponent(id)}/image`,
+        `${API_BASE}/games/${encodeURIComponent(id)}/image`,
         { method: "POST", body: fd }
       );
       return handle(res);
@@ -92,7 +92,7 @@
 
     async submitRating(id, score) {
       const res = await fetch(
-        `${API_BASE}/series/${encodeURIComponent(id)}/rating`,
+        `${API_BASE}/games/${encodeURIComponent(id)}/rating`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -104,7 +104,7 @@
 
     async getRating(id) {
       const res = await fetch(
-        `${API_BASE}/series/${encodeURIComponent(id)}/rating`
+        `${API_BASE}/games/${encodeURIComponent(id)}/rating`
       );
       return handle(res);
     },

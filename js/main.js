@@ -8,14 +8,14 @@
   document.addEventListener("DOMContentLoaded", async () => {
     const root = document.getElementById("app");
     try {
-      // En la fase 1 todavía no existe /series; usamos /healthz como ping.
+      // En la fase 1 todavía no existe /games; usamos /healthz como ping.
       const res = await fetch(`${window.api.base}/healthz`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const body = await res.json();
       window.ui.clear(root);
       root.appendChild(
         window.ui.el("p", { class: "empty" }, [
-          `Backend conectado (${body.status}). Listado de series próximamente…`,
+          `Backend conectado (${body.status}). Listado de juegos próximamente…`,
         ])
       );
     } catch (e) {
