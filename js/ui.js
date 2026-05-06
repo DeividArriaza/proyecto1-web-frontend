@@ -89,5 +89,114 @@
     return el("p", { class: "error" }, [message]);
   }
 
-  global.ui = { el, clear, renderCard, renderList, renderError };
+  // Status posibles aceptados por el backend. Centralizados aquí para que
+  // el form los pueda mostrar como <option> sin duplicar la lista.
+  const STATUS_OPTIONS = [
+    { value: "playing", label: "playing — jugando ahora" },
+    { value: "beaten", label: "beaten — terminado" },
+    { value: "dropped", label: "dropped — abandonado" },
+    { value: "backlog", label: "backlog — pendiente" },
+  ];
+
+  // renderForm crea un formulario de crear/editar. `initial` puede ser un
+  // juego existente (modo edición) o null (modo creación). `onSubmit` recibe
+  // el payload normalizado y debe devolver una promesa; `onCancel` cierra el
+  // formulario sin enviar.
+  function renderForm({ initial, onSubmit, onCancel }) {
+    const editing = !!initial;
+    const errorBox = el("p", { class: "form-error", hidden: "hidden" }, [""]);
+
+    const titleInput = el("input", {
+      type: "text", name: "title", required: "required", maxlength: "255",
+      value: initial?.title ?? "",
+    });
+    const genreInput = el("input", {
+      type: "text", name: "genre", maxlength: "100",
+      value: initial?.genre ?? "",
+    });
+    const statusSelect = el("select", { name: "status", required: "required" },
+      STATUS_OPTIONS.map((s) =>
+        el("option", { value: s.value, selected: initial?.status === s.value }, [s.label])
+      )
+    );
+    const hoursInput = el("input", {
+      type: "number", name: "hours_played", min: "0", step: "1",
+      value: initial?.hours_played ?? 0,
+    });
+    const totalInput = el("input", {
+      type: "number", name: "total_hours", min: "0", step: "1",
+      value: initial?.total_hours ?? "",
+    });
+
+    const submitBtn = el("button", { type: "submit", class: "btn btn-primary" }, [
+      editing ? "Guardar cambios" : "Crear juego",
+    ]);
+    const cancelBtn = el(
+      "button",
+      { type: "button", class: "btn btn-ghost", onclick: () => onCancel() },
+      ["Cancelar"]
+    );
+
+    const form = el("form", {
+      class: "game-form",
+      onsubmit: async (e) => {
+        e.preventDefault();
+        errorBox.hidden = true;
+        submitBtn.disabled = true;
+
+        const payload = {
+          title: titleInput.value.trim(),
+          genre: genreInput.value.trim() || null,
+          status: statusSelect.value,
+          hours_played: parseIntOrZero(hoursInput.value),
+        };
+        const total = totalInput.value.trim();
+        if (total !== "") payload.total_hours = parseIntOrZero(total);
+
+        try {
+          await onSubmit(payload);
+        } catch (err) {
+          errorBox.hidden = false;
+          errorBox.textContent = formatApiError(err);
+          submitBtn.disabled = false;
+        }
+      },
+    }, [
+      el("h3", {}, [editing ? `Editar ${initial.title}` : "Nuevo juego"]),
+      errorBox,
+      el("label", {}, ["Título *", titleInput]),
+      el("label", {}, ["Género", genreInput]),
+      el("label", {}, ["Status *", statusSelect]),
+      el("label", {}, ["Horas jugadas", hoursInput]),
+      el("label", {}, ["Horas totales (estimado)", totalInput]),
+      el("div", { class: "form-actions" }, [cancelBtn, submitBtn]),
+    ]);
+
+    return form;
+  }
+
+  function parseIntOrZero(s) {
+    const n = parseInt(s, 10);
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  // formatApiError extrae el mensaje útil del Error que lanza api.js. Cuando
+  // el body trae `errors[]` listamos todos los problemas para que el usuario
+  // los vea de un solo golpe.
+  function formatApiError(err) {
+    const body = err.body;
+    if (body && Array.isArray(body.errors)) {
+      return body.errors.map((e) => `${e.field}: ${e.error}`).join(" · ");
+    }
+    return err.message || "Error desconocido";
+  }
+
+  global.ui = {
+    el,
+    clear,
+    renderCard,
+    renderList,
+    renderError,
+    renderForm,
+  };
 })(window);

@@ -1,6 +1,5 @@
 // Punto de entrada del cliente. Orquesta la carga inicial del listado y
-// delegará en los siguientes commits las acciones de crear, editar, votar
-// y eliminar.
+// las acciones de la barra de herramientas (crear, editar, eliminar, votar).
 
 (function () {
   "use strict";
@@ -9,6 +8,7 @@
   const api = window.api;
 
   document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("btn-new").addEventListener("click", openCreateForm);
     refreshList();
   });
 
@@ -32,5 +32,33 @@
         )
       );
     }
+  }
+
+  // openCreateForm muestra el form vacío para crear un juego nuevo.
+  function openCreateForm() {
+    showForm({
+      initial: null,
+      onSubmit: async (payload) => {
+        await api.createGame(payload);
+        closeForm();
+        await refreshList();
+      },
+    });
+  }
+
+  function showForm({ initial, onSubmit }) {
+    const slot = document.getElementById("form-slot");
+    ui.clear(slot);
+    slot.appendChild(
+      ui.renderForm({ initial, onSubmit, onCancel: closeForm })
+    );
+    slot.hidden = false;
+    slot.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function closeForm() {
+    const slot = document.getElementById("form-slot");
+    ui.clear(slot);
+    slot.hidden = true;
   }
 })();

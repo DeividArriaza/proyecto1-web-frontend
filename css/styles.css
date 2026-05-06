@@ -46,10 +46,24 @@ body {
   opacity: 0.7;
 }
 
-main {
+main,
+.toolbar,
+.form-slot {
   max-width: 1080px;
   margin: 0 auto;
-  padding: 1.5rem;
+  padding: 0 1.5rem;
+}
+
+main {
+  padding-top: 1rem;
+  padding-bottom: 2.5rem;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding-top: 1rem;
 }
 
 .empty {
@@ -67,6 +81,34 @@ main {
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
 }
+
+/* --- Botones --- */
+
+.btn {
+  font: inherit;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background 0.12s ease, transform 0.12s ease;
+}
+
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+  background: var(--pink-500);
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 3px 8px rgba(255, 107, 151, 0.35);
+}
+.btn-primary:hover { background: var(--pink-600); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--pink-600);
+  border-color: var(--pink-300);
+}
+.btn-ghost:hover { background: var(--pink-100); }
 
 /* --- Listado de tarjetas --- */
 
@@ -139,4 +181,67 @@ main {
   margin: 0;
   font-size: 0.8rem;
   color: var(--ink-soft);
+}
+
+/* --- Form crear/editar --- */
+
+.form-slot {
+  margin-top: 1rem;
+}
+
+.game-form {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.85rem 1rem;
+}
+
+.game-form h3 {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--pink-600);
+}
+
+.game-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.game-form input,
+.game-form select {
+  font: inherit;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--pink-200);
+  border-radius: var(--radius-sm);
+  background: var(--pink-50);
+  color: var(--ink);
+}
+
+.game-form input:focus,
+.game-form select:focus {
+  outline: 2px solid var(--pink-400);
+  outline-offset: 1px;
+}
+
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.form-error {
+  grid-column: 1 / -1;
+  color: #b3324a;
+  background: #fff0f3;
+  border: 1px solid var(--pink-300);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
 }

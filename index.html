@@ -12,6 +12,15 @@
       <p class="tagline">Tu colección personal de videojuegos, con cariño.</p>
     </header>
 
+    <!-- Barra de acciones globales: por ahora solo Nuevo juego. Otros botones
+         (exportar CSV, filtros) se sumarán en fases siguientes. -->
+    <section class="toolbar">
+      <button id="btn-new" class="btn btn-primary" type="button">＋ Nuevo juego</button>
+    </section>
+
+    <!-- Contenedor donde el form de creación/edición se monta dinámicamente. -->
+    <section id="form-slot" class="form-slot" hidden></section>
+
     <main id="app">
       <!-- Estado inicial: el JS del cliente lo reemplaza al cargar los juegos. -->
       <p class="empty">Cargando juegos…</p>
