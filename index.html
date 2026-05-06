@@ -12,9 +12,9 @@
       <p class="tagline">Tu colección personal de videojuegos, con cariño.</p>
     </header>
 
-    <!-- Barra de acciones globales: por ahora solo Nuevo juego. Otros botones
-         (exportar CSV, filtros) se sumarán en fases siguientes. -->
+    <!-- Barra de acciones globales. -->
     <section class="toolbar">
+      <button id="btn-export" class="btn btn-ghost" type="button">⬇ Exportar CSV</button>
       <button id="btn-new" class="btn btn-primary" type="button">＋ Nuevo juego</button>
     </section>
 
@@ -26,9 +26,10 @@
       <p class="empty">Cargando juegos…</p>
     </main>
 
-    <!-- Cargamos los módulos en orden: helpers de API, helpers de DOM y luego el entry point. -->
+    <!-- Cargamos los módulos en orden: helpers de API, helpers de DOM, exportación y entry point. -->
     <script src="js/api.js"></script>
     <script src="js/ui.js"></script>
+    <script src="js/csv.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

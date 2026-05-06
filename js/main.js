@@ -8,8 +8,13 @@
   const ui = window.ui;
   const api = window.api;
 
+  // currentGames mantiene en memoria el último listado para que el export
+  // a CSV sea instantáneo y use exactamente lo que el usuario está viendo.
+  let currentGames = [];
+
   document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("btn-new").addEventListener("click", openCreateForm);
+    document.getElementById("btn-export").addEventListener("click", exportCSV);
     refreshList();
   });
 
@@ -29,6 +34,7 @@
         games.map((g) => api.getRating(g.id).catch(() => null))
       );
       games.forEach((g, i) => { g.rating = ratings[i]; });
+      currentGames = games;
 
       ui.clear(root);
       root.appendChild(ui.renderList(games, cardActions));
@@ -78,6 +84,17 @@
         await refreshList();
       },
     });
+  }
+
+  // exportCSV vuelca el estado en memoria a un archivo CSV. No vuelve a
+  // pegarle a la API: usa exactamente los juegos (con su rating) que la
+  // pantalla está mostrando, así "lo que ves es lo que se descarga".
+  function exportCSV() {
+    if (currentGames.length === 0) {
+      window.alert("No hay juegos para exportar todavía.");
+      return;
+    }
+    window.csv.download(currentGames, "games-tracker");
   }
 
   // confirmAndDelete pide confirmación nativa antes de borrar — pequeño y
