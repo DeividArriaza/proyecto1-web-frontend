@@ -4,13 +4,19 @@
 (function (global) {
   "use strict";
 
-  // Base de la API. Cuando el frontend se sirve por nginx en docker-compose
-  // y el backend en un puerto distinto del mismo host, esta URL se resuelve
-  // contra `localhost` del navegador. Si despliegas en otro dominio, ajusta
-  // este valor (o léelo de un <meta>/window.config) sin tocar el resto del JS.
-  const API_BASE =
-    (global.__API_BASE__ && String(global.__API_BASE__)) ||
-    "http://localhost:8787";
+  // Base de la API. La deducimos del `window.location` para que funcione
+  // sin configuración tanto en local (localhost:4567 → API en localhost:8787)
+  // como en un VPS público (mi-dominio:4567 → API en mi-dominio:8787).
+  // Para overridear (subdominio distinto, puerto cambiado, etc.) definí
+  // `window.__API_BASE__` en un <script> antes de cargar este archivo.
+  const API_BASE = (() => {
+    if (global.__API_BASE__) return String(global.__API_BASE__);
+    const { protocol, hostname } = window.location;
+    if (hostname === "localhost" || hostname === "127.0.0.1") {
+      return "http://localhost:8787";
+    }
+    return `${protocol}//${hostname}:8787`;
+  })();
 
   // Lanza una excepción descriptiva cuando la respuesta no es 2xx, para que
   // los llamadores puedan envolverla con try/catch si lo desean.
