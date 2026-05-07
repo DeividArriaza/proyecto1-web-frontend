@@ -56,7 +56,7 @@ python3 -m http.server 4567
 
 ## Decisiones de diseño
 
-- **Estética:** rosa/cutesy, con tipografías amigables y bordes redondeados. La paleta vive en variables CSS al inicio de `css/styles.css`.
+- **Estética:** dark theme gamer-oriented con acentos neón (violeta + cian, badges de status diferenciados por color). Pensado para encajar con el público objetivo de la app — un jugador de videojuegos. La paleta completa vive en custom properties al inicio de `css/styles.css`, así que retematizar es cambiar variables.
 - **Sin librerías:** todas las llamadas usan `fetch()` y `URLSearchParams`; el CSV se construye en memoria y se descarga vía `Blob` + `URL.createObjectURL`.
 - **Sin server-side rendering:** el servidor nunca devuelve HTML. Toda la UI se compone en el cliente a partir de JSON.
 

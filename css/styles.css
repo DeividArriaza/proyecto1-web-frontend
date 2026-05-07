@@ -1,50 +1,96 @@
-/* Games Tracker — estética rosa y cutesy. Las fases siguientes refinan los detalles. */
+/* Games Tracker — tema dark con acentos neón, pensado para un jugador de
+   videojuegos. Toda la paleta vive en custom properties para que sea fácil
+   tunearla desde un solo lugar. */
 
 :root {
-  --pink-50: #fff5f8;
-  --pink-100: #ffe4ee;
-  --pink-200: #ffc8db;
-  --pink-300: #ffb1c9;
-  --pink-400: #ff8fb3;
-  --pink-500: #ff6b97;
-  --pink-600: #e25c87;
-  --ink: #4b2236;
-  --ink-soft: #7a4f64;
-  --shadow: 0 6px 18px rgba(226, 92, 135, 0.18);
-  --radius-lg: 18px;
-  --radius-md: 12px;
-  --radius-sm: 8px;
+  /* Fondos en tres niveles para construir profundidad sin imágenes. */
+  --bg-0: #0b0d17;
+  --bg-1: #141828;
+  --surface: #1c2138;
+  --surface-soft: #232a45;
+  --border: #2e3553;
+  --border-strong: #404a73;
+
+  /* Texto */
+  --text: #e6e9f5;
+  --text-muted: #8a93b3;
+  --text-faded: #5b6488;
+
+  /* Acentos principales: violeta + cian forman el "espíritu neon". */
+  --primary: #7c3aed;
+  --primary-bright: #a855f7;
+  --primary-glow: rgba(168, 85, 247, 0.35);
+  --accent: #22d3ee;
+  --accent-bright: #06b6d4;
+  --accent-glow: rgba(34, 211, 238, 0.3);
+
+  /* Acentos por estado y feedback */
+  --green: #4ade80;
+  --green-soft: rgba(74, 222, 128, 0.18);
+  --orange: #fb923c;
+  --orange-soft: rgba(251, 146, 60, 0.18);
+  --red: #f87171;
+  --red-soft: rgba(248, 113, 113, 0.18);
+  --pink: #ec4899;
+  --pink-soft: rgba(236, 72, 153, 0.18);
+
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --radius-sm: 6px;
+  --shadow-card: 0 4px 18px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 0 1px var(--border-strong),
+                 0 8px 24px rgba(124, 58, 237, 0.18);
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background: linear-gradient(180deg, var(--pink-50) 0%, var(--pink-100) 100%);
-  color: var(--ink);
-  font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(124, 58, 237, 0.18), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(34, 211, 238, 0.12), transparent 65%),
+    var(--bg-0);
+  color: var(--text);
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  letter-spacing: 0.005em;
 }
+
+::selection {
+  background: var(--primary);
+  color: white;
+}
+
+/* --- Header --- */
 
 .app-header {
   text-align: center;
-  padding: 2.5rem 1rem 1rem;
+  padding: 3rem 1rem 1.25rem;
 }
 
 .app-header h1 {
   margin: 0;
-  font-size: 2.4rem;
-  letter-spacing: 0.02em;
-  color: var(--pink-600);
+  font-size: 2.6rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, var(--primary-bright), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 30px var(--primary-glow);
 }
 
 .tagline {
-  margin-top: 0.25rem;
-  color: var(--ink);
-  opacity: 0.7;
+  margin-top: 0.4rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
 }
+
+/* --- Layout --- */
 
 main,
 .toolbar,
@@ -56,27 +102,27 @@ main,
 
 main {
   padding-top: 1rem;
-  padding-bottom: 2.5rem;
+  padding-bottom: 3rem;
 }
 
 .toolbar {
   display: flex;
   justify-content: flex-end;
-  gap: 0.5rem;
+  gap: 0.6rem;
   padding-top: 1rem;
 }
 
 .empty {
   text-align: center;
+  color: var(--text-faded);
   font-style: italic;
-  color: var(--ink-soft);
 }
 
 .error {
   text-align: center;
-  background: #fff0f3;
-  color: #b3324a;
-  border: 1px solid var(--pink-300);
+  background: var(--red-soft);
+  color: var(--red);
+  border: 1px solid rgba(248, 113, 113, 0.4);
   border-radius: var(--radius-md);
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
@@ -86,101 +132,139 @@ main {
 
 .btn {
   font: inherit;
+  font-weight: 600;
+  letter-spacing: 0.03em;
   border-radius: var(--radius-md);
   border: 1px solid transparent;
-  padding: 0.5rem 1rem;
+  padding: 0.55rem 1.1rem;
   cursor: pointer;
-  transition: background 0.12s ease, transform 0.12s ease;
+  transition: transform 0.12s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
 .btn:active { transform: translateY(1px); }
 
 .btn-primary {
-  background: var(--pink-500);
+  background: linear-gradient(135deg, var(--primary), var(--primary-bright));
   color: white;
-  font-weight: 600;
-  box-shadow: 0 3px 8px rgba(255, 107, 151, 0.35);
+  box-shadow: 0 6px 18px var(--primary-glow);
 }
-.btn-primary:hover { background: var(--pink-600); }
+.btn-primary:hover {
+  box-shadow: 0 10px 28px var(--primary-glow), 0 0 0 1px var(--primary-bright) inset;
+}
 
 .btn-ghost {
   background: transparent;
-  color: var(--pink-600);
-  border-color: var(--pink-300);
+  color: var(--accent);
+  border-color: var(--border-strong);
 }
-.btn-ghost:hover { background: var(--pink-100); }
+.btn-ghost:hover {
+  background: rgba(34, 211, 238, 0.08);
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
 
 /* --- Listado de tarjetas --- */
 
 .game-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1.25rem;
+  gap: 1.4rem;
 }
 
 .card {
-  background: #ffffff;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.15s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 
 .card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  border-color: var(--primary-bright);
+  box-shadow: var(--shadow-glow);
 }
 
 .card-cover {
   width: 100%;
   aspect-ratio: 2 / 3;
   object-fit: cover;
-  background: var(--pink-100);
+  background: var(--bg-1);
   display: block;
+  border-bottom: 1px solid var(--border);
 }
 
 .card-body {
-  padding: 0.85rem 1rem 1rem;
+  padding: 0.9rem 1rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.45rem;
   flex: 1;
 }
 
 .card-title {
   margin: 0;
   font-size: 1.05rem;
-  color: var(--pink-600);
+  font-weight: 700;
+  color: var(--text);
   line-height: 1.25;
 }
 
 .card-meta {
   margin: 0;
   font-size: 0.85rem;
-  color: var(--ink-soft);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
 }
 
+/* Badges de status: cada estado tiene su acento neón. */
 .status-badge {
   display: inline-block;
   border-radius: var(--radius-sm);
-  padding: 0.05rem 0.45rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: capitalize;
-  background: var(--pink-200);
-  color: var(--ink);
+  padding: 0.1rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--surface-soft);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
 }
 
-.status-badge.playing  { background: var(--pink-300); }
-.status-badge.beaten   { background: #ffd1e1; color: #66294a; }
-.status-badge.dropped  { background: #f3d3d6; color: #7a3a47; }
-.status-badge.backlog  { background: #ffeef4; color: #884764; }
+.status-badge.playing {
+  background: var(--green-soft);
+  color: var(--green);
+  border-color: rgba(74, 222, 128, 0.45);
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.15);
+}
+.status-badge.beaten {
+  background: rgba(124, 58, 237, 0.18);
+  color: var(--primary-bright);
+  border-color: rgba(168, 85, 247, 0.45);
+  box-shadow: 0 0 10px var(--primary-glow);
+}
+.status-badge.dropped {
+  background: var(--red-soft);
+  color: var(--red);
+  border-color: rgba(248, 113, 113, 0.45);
+}
+.status-badge.backlog {
+  background: var(--orange-soft);
+  color: var(--orange);
+  border-color: rgba(251, 146, 60, 0.45);
+}
 
 .card-progress {
   margin: 0;
-  font-size: 0.8rem;
-  color: var(--ink-soft);
+  font-size: 0.82rem;
+  color: var(--text-muted);
 }
 
 /* Bloque de rating: estrella + promedio + voto inline. */
@@ -191,79 +275,105 @@ main {
   flex-wrap: wrap;
   margin-top: 0.3rem;
   font-size: 0.85rem;
-  color: var(--ink-soft);
+  color: var(--text-muted);
 }
 
 .rating-score {
   display: inline-flex;
   align-items: center;
-  gap: 0.2rem;
-  font-weight: 600;
-  color: var(--ink);
+  gap: 0.25rem;
+  font-weight: 700;
+  color: var(--text);
 }
 
 .rating-score::before {
   content: "★";
-  color: var(--pink-500);
+  color: var(--accent);
+  text-shadow: 0 0 8px var(--accent-glow);
 }
 
-.rating-score.empty { font-weight: 400; opacity: 0.7; }
+.rating-score.empty {
+  font-weight: 400;
+  color: var(--text-faded);
+}
+.rating-score.empty::before {
+  color: var(--text-faded);
+  text-shadow: none;
+}
+
+.rating-count {
+  color: var(--text-muted);
+  font-weight: 500;
+}
 
 .rating-vote {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.3rem;
   margin-left: auto;
+  color: var(--text-muted);
+  font-size: 0.78rem;
 }
 
 .rating-vote select {
   font: inherit;
-  padding: 0.15rem 0.3rem;
-  border: 1px solid var(--pink-200);
+  padding: 0.2rem 0.4rem;
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
-  background: var(--pink-50);
-  color: var(--ink);
+  background: var(--bg-1);
+  color: var(--text);
+}
+.rating-vote select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-glow);
 }
 
-/* Acciones por tarjeta: van al fondo, en una fila justificada al final. */
+/* Acciones por tarjeta. */
 .card-actions {
   margin-top: auto;
-  padding-top: 0.6rem;
+  padding-top: 0.7rem;
   display: flex;
-  gap: 0.4rem;
+  gap: 0.45rem;
   justify-content: flex-end;
   flex-wrap: wrap;
 }
 
 .btn-small {
-  font-size: 0.8rem;
-  padding: 0.3rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 0.35rem 0.7rem;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--pink-200);
-  background: var(--pink-50);
-  color: var(--ink);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-1);
+  color: var(--text);
   cursor: pointer;
-  transition: background 0.12s ease;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
 }
-.btn-small:hover { background: var(--pink-100); }
+.btn-small:hover {
+  background: var(--surface-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
 
-.btn-small.danger {
-  border-color: #e8a8b6;
-  color: #b3324a;
+.btn-small.danger { color: var(--red); border-color: rgba(248, 113, 113, 0.4); }
+.btn-small.danger:hover {
+  background: var(--red-soft);
+  border-color: var(--red);
+  color: var(--red);
 }
-.btn-small.danger:hover { background: #ffeaef; }
 
 /* --- Form crear/editar --- */
 
-.form-slot {
-  margin-top: 1rem;
-}
+.form-slot { margin-top: 1rem; }
 
 .game-form {
-  background: #ffffff;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow);
-  padding: 1.25rem;
+  box-shadow: var(--shadow-card);
+  padding: 1.4rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 0.85rem 1rem;
@@ -272,31 +382,43 @@ main {
 .game-form h3 {
   grid-column: 1 / -1;
   margin: 0;
-  color: var(--pink-600);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
 }
 
 .game-form label {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  font-size: 0.85rem;
-  color: var(--ink-soft);
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .game-form input,
 .game-form select {
   font: inherit;
-  padding: 0.45rem 0.6rem;
-  border: 1px solid var(--pink-200);
+  text-transform: none;
+  letter-spacing: normal;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
-  background: var(--pink-50);
-  color: var(--ink);
+  background: var(--bg-1);
+  color: var(--text);
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
 }
+
+.game-form input::placeholder { color: var(--text-faded); }
 
 .game-form input:focus,
 .game-form select:focus {
-  outline: 2px solid var(--pink-400);
-  outline-offset: 1px;
+  outline: none;
+  border-color: var(--primary-bright);
+  box-shadow: 0 0 0 3px var(--primary-glow);
 }
 
 .form-actions {
@@ -308,24 +430,33 @@ main {
 
 .form-error {
   grid-column: 1 / -1;
-  color: #b3324a;
-  background: #fff0f3;
-  border: 1px solid var(--pink-300);
+  color: var(--red);
+  background: var(--red-soft);
+  border: 1px solid rgba(248, 113, 113, 0.4);
   border-radius: var(--radius-md);
-  padding: 0.5rem 0.75rem;
+  padding: 0.55rem 0.8rem;
   font-size: 0.85rem;
 }
 
 .form-hint {
-  color: var(--ink-soft);
-  font-size: 0.75rem;
+  color: var(--text-faded);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
 }
 
-.label-image {
-  grid-column: 1 / -1;
-}
+.label-image { grid-column: 1 / -1; }
 
 .label-image input[type="file"] {
-  background: var(--pink-50);
-  padding: 0.4rem;
+  background: var(--bg-1);
+  padding: 0.45rem;
+  color: var(--text-muted);
+}
+
+/* Pequeño respiro responsive: el header se achica un poco en pantallas
+   chicas para no comerse el primer pliegue. */
+@media (max-width: 480px) {
+  .app-header { padding-top: 2rem; }
+  .app-header h1 { font-size: 2rem; }
+  main, .toolbar, .form-slot { padding-left: 1rem; padding-right: 1rem; }
 }
