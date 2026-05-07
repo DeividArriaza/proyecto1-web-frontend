@@ -64,4 +64,4 @@ python3 -m http.server 4567
 
 ## Repositorios relacionados
 
-- Backend (Go + PostgreSQL + Docker Compose): [games-tracker-backend](../games-tracker-backend)
+- Backend (Go + PostgreSQL + Docker Compose): [[games-tracker-backend](../games-tracker-backend)](https://github.com/DeividArriaza/proyecto1-web-backend) 
