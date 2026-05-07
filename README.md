@@ -4,7 +4,7 @@ Cliente web del proyecto Games Tracker. HTML + CSS + JavaScript vanilla. Sin fra
 
 La API que consume vive en el repo [`games-tracker-backend`](../games-tracker-backend), que también incluye el `docker-compose.yml` que levanta el stack completo (DB + API + frontend en Nginx).
 
-> 🌐 **Demo público:** _pendiente de despliegue_ — se publicará en un VPS Contabo y el enlace se añadirá aquí.
+> 🌐 **Demo público:** [http://www.servigtdev.com:4567/](http://www.servigtdev.com:4567/)
 
 ---
 
